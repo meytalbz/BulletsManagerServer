@@ -21,7 +21,11 @@ db.sequelize = sequelize;
 
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.weaponType = require("../models/weaponType.model")(sequelize, Sequelize);
+db.weapon = require("../models/weapon.model")(sequelize, Sequelize);
+db.bulletLog = require("../models/bulletLog.model")(sequelize, Sequelize);
 
+//assosiation between role & user
 db.role.belongsToMany(db.user, {
   through: "user_roles",
   foreignKey: "roleId",
@@ -33,6 +37,31 @@ db.user.belongsToMany(db.role, {
   otherKey: "roleId",
 });
 
-db.ROLES = ["user", "admin", "moderator"];
+//assosiation between weaponType & weapon
+db.weaponType.hasMany(db.weapon, {
+  foreignKey: {
+    name: "weapon_type",
+    type: Sequelize.INTEGER,
+  },
+});
+
+//assosiation between weapon & bulletLog
+db.weapon.hasMany(db.bulletLog, {
+  foreignKey: {
+    name: "weapon_uuid",
+    type: Sequelize.UUID,
+  },
+});
+
+//assosiation between bulletLog & user
+db.user.hasMany(db.bulletLog, {
+  foreignKey: {
+    name: "author_id",
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+});
+
+db.ROLES = ["user", "admin", "moderator", "everyone"];
 
 module.exports = db;
