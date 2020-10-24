@@ -5,13 +5,6 @@ module.exports = (sequelize, Sequelize) => {
       defaultValue: Sequelize.UUIDV4,
       primaryKey: true,
     },
-    author_id: {
-      type: Sequelize.UUID,
-      allowNull: false,
-    },
-    weapon_uuid: {
-      type: Sequelize.UUID,
-    },
     shoot_date: {
       type: Sequelize.DATE,
       allowNull: false,

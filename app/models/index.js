@@ -36,21 +36,31 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId",
 });
-// //assosiation between weaponType & weapon
-// db.weaponType.hasMany(db.weapon, {
-//   foreignKey: "weapon_type",
-// });
-// db.weapon.belongsTo(db.weaponType);
-// //assosiation between weapon & bulletLog
-// db.weapon.hasMany(db.bulletLog, {
-//   foreignKey: "weapon_uuid",
-// });
-// db.bulletLog.belongsTo(db.weapon);
-// //assosiation between bulletLog & user
-// db.user.hasMany(db.bulletLog, {
-//   foreignKey: "author_id",
-// });
-// db.bulletLog.belongsTo(db.user);
+
+//assosiation between weaponType & weapon
+db.weaponType.hasMany(db.weapon, {
+  foreignKey: {
+    name: "weapon_type",
+    type: Sequelize.INTEGER,
+  },
+});
+
+//assosiation between weapon & bulletLog
+db.weapon.hasMany(db.bulletLog, {
+  foreignKey: {
+    name: "weapon_uuid",
+    type: Sequelize.UUID,
+  },
+});
+
+//assosiation between bulletLog & user
+db.user.hasMany(db.bulletLog, {
+  foreignKey: {
+    name: "author_id",
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+});
 
 db.ROLES = ["user", "admin", "moderator", "everyone"];
 

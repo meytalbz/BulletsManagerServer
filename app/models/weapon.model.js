@@ -10,9 +10,6 @@ module.exports = (sequelize, Sequelize) => {
       unique: true,
       allowNull: false,
     },
-    weapon_type: {
-      type: Sequelize.INTEGER,
-    },
   });
 
   return Weapon;
