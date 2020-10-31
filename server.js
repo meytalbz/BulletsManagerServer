@@ -17,16 +17,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // routes
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require("./app/routes/auth.routes")(app);
+require("./app/routes/user.routes")(app);
 
 const db = require("./app/models");
 const Role = db.role;
+const User = db.user;
+const WeaponType = db.weaponType;
+const Weapon = db.weapon;
 
 //  For Development
 db.sequelize.sync({ force: true }).then(() => {
   console.log("Drop and Resync Db");
   initial();
+  dev_data();
 });
 
 // For production
@@ -47,7 +51,42 @@ function initial() {
     id: 3,
     name: "admin",
   });
+
+  Role.create({
+    id: 4,
+    name: "everyone",
+  });
+
+  WeaponType.create({
+    type_id: 1,
+    weapon_name: "M24",
+    caliber_diameter: "7.62",
+    caliber_hight: "51",
+  });
 }
+
+//DEV ONLY UNTIL PROD:
+// START:
+var bcrypt = require("bcryptjs");
+
+function dev_data() {
+  User.create({
+    username: "admin",
+    email: "admin@admin.com",
+    password: bcrypt.hashSync("123123", 8),
+  }).then((user) => {
+    // role 3 = ADMIN
+    user.setRoles([3]).then(() => {
+      console.log("Admin user was created");
+    });
+  });
+
+  Weapon.create({
+    weapon_id: "1111",
+    weapon_type: 1,
+  });
+}
+//END
 
 // simple route
 app.get("/", (req, res) => {
