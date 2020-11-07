@@ -19,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // routes
 require("./app/routes/auth.routes")(app);
 require("./app/routes/user.routes")(app);
+require("./app/routes/bulletLog.routes")(app);
 
 const db = require("./app/models");
 const Role = db.role;
