@@ -2,6 +2,10 @@ exports.allAccess = (req, res) => {
   res.status(200).send("Public Content.");
 };
 
+exports.everyoneBoard = (req, res) => {
+  res.status(200).send("Everyone Content.");
+};
+
 exports.userBoard = (req, res) => {
   res.status(200).send("User Content.");
 };

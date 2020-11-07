@@ -58,6 +58,23 @@ isModerator = (req, res, next) => {
   });
 };
 
+isUser = (req, res, next) => {
+  User.findByPk(req.userId).then((user) => {
+    user.getRoles().then((roles) => {
+      for (let i = 0; i < roles.length; i++) {
+        if (roles[i].name === "user") {
+          next();
+          return;
+        }
+      }
+
+      res.status(403).send({
+        message: "Require User Role!",
+      });
+    });
+  });
+};
+
 isModeratorOrAdmin = (req, res, next) => {
   User.findByPk(req.userId).then((user) => {
     user.getRoles().then((roles) => {
@@ -84,6 +101,7 @@ const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
   isModerator: isModerator,
+  isUser: isUser,
   isModeratorOrAdmin: isModeratorOrAdmin,
 };
 module.exports = authJwt;
