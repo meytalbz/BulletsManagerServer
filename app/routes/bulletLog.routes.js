@@ -15,4 +15,10 @@ module.exports = function (app) {
     [authJwt.verifyToken, authJwt.isUserOrModeratorOrAdmin],
     controller.addLog
   );
+
+  app.get(
+    "/api/log/search/:uuid",
+    [authJwt.verifyToken, authJwt.isUserOrModeratorOrAdmin],
+    controller.searchLog
+  );
 };

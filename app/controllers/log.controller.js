@@ -38,3 +38,24 @@ exports.addLog = (req, res) => {
     return res.status(401).send({ message: "invalid weapon id." });
   }
 };
+
+exports.searchLog = (req, res) => {
+  if (req.params.uuid) {
+    BulletLog.findOne({
+      where: {
+        uuid: req.params.uuid,
+      },
+    })
+      .then((log) => {
+        if (!log) {
+          return res.status(404).send({ message: "Weapon LOG Not found." });
+        }
+        return res.status(200).send({ log });
+      })
+      .catch((err) => {
+        res.status(500).send({ message: err.message });
+      });
+  } else {
+    return res.status(401).send({ message: "invalid log uuid." });
+  }
+};
