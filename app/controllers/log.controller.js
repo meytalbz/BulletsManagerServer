@@ -40,22 +40,31 @@ exports.addLog = (req, res) => {
 };
 
 exports.searchLog = (req, res) => {
-  if (req.params.uuid) {
-    BulletLog.findOne({
+  if (req.params.weapon_id) {
+    Weapon.findOne({
       where: {
-        uuid: req.params.uuid,
+        weapon_id: req.params.weapon_id,
       },
-    })
-      .then((log) => {
-        if (!log) {
-          return res.status(404).send({ message: "Weapon LOG Not found." });
-        }
-        return res.status(200).send({ log });
+    }).then((weapon) => {
+      if (!weapon) {
+        return res.status(404).send({ message: "Weapon Not found." });
+      }
+      BulletLog.findAll({
+        where: {
+          weapon_uuid: weapon.weapon_uuid,
+        },
       })
-      .catch((err) => {
-        res.status(500).send({ message: err.message });
-      });
+        .then((log) => {
+          if (!log) {
+            return res.status(404).send({ message: "Weapon LOG Not found." });
+          }
+          return res.status(200).send({ log });
+        })
+        .catch((err) => {
+          res.status(500).send({ message: err.message });
+        });
+    });
   } else {
-    return res.status(401).send({ message: "invalid log uuid." });
+    return res.status(401).send({ message: "invalid weapon id" });
   }
 };

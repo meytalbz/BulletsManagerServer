@@ -17,7 +17,7 @@ module.exports = function (app) {
   );
 
   app.get(
-    "/api/log/search/:uuid",
+    "/api/log/search/:weapon_id",
     [authJwt.verifyToken, authJwt.isUserOrModeratorOrAdmin],
     controller.searchLog
   );
